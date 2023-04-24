@@ -7,11 +7,9 @@ import com.example.url_shortener.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +27,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register( RegisterRequest request) {
-//        var checkUserExist = repository.findByEmail(request.getEmail()).orElseThrow();
-//        if (checkUserExist!=null) return new AuthenticationResponse("");
-//        if (checkUserExist!=null) return new AuthenticationResponse("");
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
