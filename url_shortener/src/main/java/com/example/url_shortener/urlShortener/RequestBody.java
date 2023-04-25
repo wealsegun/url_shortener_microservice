@@ -1,2 +1,4 @@
-package com.example.url_shortener.urlShortener;public @interface RequestBody {
+package com.example.url_shortener.urlShortener;
+
+public @interface RequestBody {
 }

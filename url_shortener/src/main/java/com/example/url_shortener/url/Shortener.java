@@ -1,9 +1,6 @@
 package com.example.url_shortener.url;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,34 +15,20 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "shoteners")
-public class Shortener implements URLShortener {
+public class Shortener {
     @Id
     @GeneratedValue
     private  Integer id;
+    private String UrlName;
     private  String longUrl;
-    private  String shortenedUrl;
+    private  String tinyUrl;
+    private  String shortenedBitlyUrl;
     private  String userEmail;
     private  boolean isCustomRequested;
     private String customUrl;
-    private Date expiryDate;
+    private  Date  expiryDate;
+    private Date createdDate;
 
-    @Override
-    public String getShortUrl(String userEmail) { return  shortenedUrl;}
-
-    @Override
-    public boolean isCustomRequested(String userEmail) {
-        return true;
-    }
-
-    @Override
-    public Shortener getShortenerById(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Shortener> getShortenerByUserEmail(String userEmail) {
-        return null;
-    }
 
 }
 

@@ -1,5 +1,7 @@
 package com.example.url_shortener.config;
 
+import com.example.url_shortener.url.URLShortenerRepository;
+import com.example.url_shortener.urlShortener.UrlShortenerService;
 import com.example.url_shortener.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +21,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfig {
 
     private  final UserRepository repository;
+    private final URLShortenerRepository urlRepository;
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
     }
+
+//    @Bean
+//    public UrlShortenerService urlShortenerService() {
+//        return  sho
+//    }
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
