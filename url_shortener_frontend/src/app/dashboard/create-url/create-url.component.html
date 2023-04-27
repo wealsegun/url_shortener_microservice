@@ -1,0 +1,29 @@
+<div class="popup-container">
+  <form >
+    <label>
+      URL:
+      <input type="text" formControlName="url" />
+    </label>
+    <div>
+      <label>
+        <input
+          type="radio"
+          name="customRequested"
+          value="true"
+          formControlName="customRequested"
+        />
+        Custom Requested
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="customRequested"
+          value="false"
+          formControlName="customRequested"
+        />
+        Default Requested
+      </label>
+    </div>
+    <button (click)="submit()">Submit</button>
+  </form>
+</div>

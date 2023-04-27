@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MaterialModule,
     HttpClientModule
   ],
+  // exports:[MaterialModule],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -11,9 +11,11 @@ import {MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule}  from '@angular/material/stepper';
 import{ MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-
+import {  MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTableModule } from '@angular/material/table' ;
+import{MatSortModule} from '@angular/material/sort';
 @NgModule({
   imports: [
     MatButtonModule,
@@ -27,6 +29,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatSortModule,
+    MatTableModule,
 
   ],
   exports: [
@@ -41,6 +47,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatSortModule,
+    MatTableModule,
 
   ]
 })
