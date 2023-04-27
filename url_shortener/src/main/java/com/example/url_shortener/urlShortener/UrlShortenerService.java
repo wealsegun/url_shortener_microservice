@@ -36,7 +36,7 @@ public class UrlShortenerService {
         Shortener shortened;
         if (request.isCustomRequested()) {
             shortened = Shortener.builder()
-                    .UrlName(request.getUrlName())
+                    .urlName(request.getUrlName())
                     .longUrl(request.getLongUrl())
                     .tinyUrl(shortenUrl(request.getLongUrl()))
                     .shortenedBitlyUrl(shortenUrlWithBitly(request.getLongUrl()))
@@ -48,7 +48,7 @@ public class UrlShortenerService {
                     .build();
         } else {
             shortened = Shortener.builder()
-                    .UrlName(request.getUrlName())
+                    .urlName(request.getUrlName())
                     .longUrl(request.getLongUrl())
                     .tinyUrl(shortenUrl(request.getLongUrl()))
                     .shortenedBitlyUrl(shortenUrlWithBitly(request.getLongUrl()))
@@ -91,7 +91,8 @@ public class UrlShortenerService {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
             connection.setDoOutput(true);
-            String requestBody = "{\"long_url\":\"" + longUrl + "\"}";
+            String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"group_guid\": \"o_7kt4avusif\", \"title\": \"Bitly API Documentation\"}";
+//            String requestBody = "{\"long_url\":\"" + longUrl + "\" + \"domain\": \"bit.ly\"+ \"group_guid\": \"o_7kt4avusif\"+ \"title\": \"Bitly API Documentation\"}";
             connection.getOutputStream().write(requestBody.getBytes());
             connection.connect();
             int responseCode = connection.getResponseCode();
@@ -99,6 +100,13 @@ public class UrlShortenerService {
                 Scanner scanner = new Scanner(connection.getInputStream());
                 while (scanner.hasNext()) {
                     shortUrl += scanner.next();
+                }
+                scanner.close();
+            }
+            else {
+                Scanner scanner = new Scanner(connection.getErrorStream());
+                while (scanner.hasNext()) {
+                    System.out.println(scanner.next());
                 }
                 scanner.close();
             }

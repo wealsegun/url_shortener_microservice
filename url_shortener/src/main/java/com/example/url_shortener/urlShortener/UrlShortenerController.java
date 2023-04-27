@@ -2,31 +2,39 @@ package com.example.url_shortener.urlShortener;
 import com.example.url_shortener.url.Shortener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Controller
+
+//@Controller
 @RestController
 @RequestMapping("/api/v1/short")
 @RequiredArgsConstructor
+@CrossOrigin
 public class UrlShortenerController {
+
     private  final  UrlShortenerService service;
-
-
     @PostMapping("/generate")
-    public ResponseEntity<Boolean> GenerateTinyUrl(@RequestBody UrlUserRequest request) {
+    public ResponseEntity<Boolean> generate(@RequestBody UrlUserRequest request) {
+        System.out.println(request);
         return ResponseEntity.ok(service.createUserShortenedUrl(request));
     }
 
-    @GetMapping("/link")
-    public ResponseEntity<Shortener> GetShortenedUrlByUserEmail(String userEmail, Integer id) {
+    @GetMapping("/link/{userEmail}/data/{id}")
+    public ResponseEntity<Shortener> GetShortenedUrlByUserEmail(@PathVariable String userEmail, @PathVariable Integer id) {
         return ResponseEntity.ok(service.getShortenedUrlById(userEmail, id));
     }
-    @GetMapping("/links")
-    public ResponseEntity<List<Shortener>> GetUrlsByUserEmail(String userEmail) {
+    @GetMapping("/links/{userEmail}")
+    public ResponseEntity<List<Shortener>> GetUrlsByUserEmail(@PathVariable String userEmail) {
         return ResponseEntity.ok(service.getShortenedUrlsByUserEmail(userEmail));
     }
+
+//    @GetMapping("/links")
+//    public ResponseEntity<String> GetUrl() {
+//        return ResponseEntity.ok("Testing");
+//    }
+
+
 
 //    @PostMapping("/shorten")
 //    public String shortenUrl(@RequestBody String longUrl) {

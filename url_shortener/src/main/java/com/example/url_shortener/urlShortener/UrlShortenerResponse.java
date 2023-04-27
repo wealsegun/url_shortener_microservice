@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UrlShortenerResponse {
     private  Integer id;
-    private String UrlName;
+    private String urlName;
     private  String longUrl;
     private  String tinyUrl;
     private  String shortenedBitlyUrl;

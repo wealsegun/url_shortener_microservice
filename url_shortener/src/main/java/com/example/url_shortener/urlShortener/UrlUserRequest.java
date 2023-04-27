@@ -11,8 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UrlUserRequest {
-    private  Integer id;
-    private String UrlName;
+    private String urlName;
     private  String longUrl;
     private  String userEmail;
     private  boolean isCustomRequested;
