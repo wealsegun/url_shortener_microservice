@@ -15,29 +15,29 @@
               <div class="section-login-2-main">
 
                   <h1 class="section-login-2-title">Register</h1>
-                  <form class="section-login-2-form">
+                  <form novalidate [formGroup]="registerFormGroup" class="section-login-2-form">
                       <div class="login-form-1">
-                          <label for="input-email">Email</label>
-                          <input type="text" id="input-email" placeholder="john@example.com" required>
+                          <label for="firstName">First Name</label>
+                          <input formControlName="firstName" type="text" id="firstName" placeholder="Olawale" required>
                       </div>
                       <div class="login-form-2">
-                          <label for="input-name">First Name</label>
-                          <input type="text" id="input-name" placeholder="John Doe" required>
+                          <label for="lastName">last Name</label>
+                          <input formControlName="lastName" type="text" id="lastName" placeholder="Ogunleye" required>
                       </div>
                       <div class="login-form-2">
-                        <label for="input-name">Last Name</label>
-                        <input type="text" id="input-name" placeholder="John Doe" required>
+                        <label for="email">Email</label>
+                        <input formControlName="email" type="text" id="email" placeholder="John Doe" required>
                     </div>
                       <div class="login-form-3">
-                          <label for="input-password">Password</label>
-                          <input type="password" id="input-password" placeholder="At least 8 characters" required>
+                          <label for="password">Password</label>
+                          <input formControlName="password" type="password" id="password" placeholder="At least 8 characters" required>
                       </div>
                       <div class="login-form-4">
                           <input type="checkbox" id="input-checkbox">
                           <p>By creating an account, you agree to the <a href="#">Terms & Conditions.</a></p>
                       </div>
                       <div class="login-form-submit-btn">
-                          <button>Create an Account</button>
+                          <button (click)="registerUser()">Create an Account</button>
                       </div>
                       <div class="login-form-5">
                           <p>Already have an account? <a routerLink="/auth/login">Sign In</a></p>

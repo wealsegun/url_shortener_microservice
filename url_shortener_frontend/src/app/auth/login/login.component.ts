@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../services/current-user.service';
 import { AuthService } from '../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorSnackBarconfig, SuccessSnackBarconfig } from '../../shared-module/models/notification-snackbar.model';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private service: AuthService,
     private router: Router,
-    private currentUserService: CurrentUserService) {
+    private currentUserService: CurrentUserService,
+    private snackbar: MatSnackBar) {
 
       this.loginFormGroup = fb.group({
         email: ['', [Validators.required, Validators.pattern('/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;')]],
@@ -41,12 +44,19 @@ export class LoginComponent implements OnInit {
     };
 
     this.service.login(login).subscribe(user=> {
-      this.currentUserService.addToken(user.token);
-      this.currentUserService.addUserProfile(user.user);
-      this.router.navigate(["/dashboard"]);
+      if(user) {
+        this.currentUserService.addToken(user.token);
+        this.currentUserService.addUserProfile(user.user);
+        this.router.navigate(["/dashboard"]);
+
+      } else {
+        this.snackbar.open("Login failed!!!", "Close", ErrorSnackBarconfig);
+      }
     }, (error: any)=> {
       console.log(error.error);
       this.errorMessage = error.error;
+      this.snackbar.open(this.errorMessage?? "Login Failed", "Close", ErrorSnackBarconfig)
+
     })
   }
 

@@ -16,21 +16,21 @@
               <div class="section-login-2-main">
 
                   <h1 class="section-login-2-title">Login</h1>
-                  <form class="section-login-2-form">
+                  <form novalidate [formGroup]="loginFormGroup" class="section-login-2-form">
                       <div class="login-form-1">
                           <label for="input-email">Email</label>
-                          <input type="text" id="input-email" placeholder="john@example.com" required>
+                          <input formControlName="email" type="text" id="input-email" placeholder="john@example.com" required>
                       </div>
                       <div class="login-form-3">
                           <label for="input-password">Password</label>
-                          <input type="password" id="input-password" placeholder="At least 8 characters" required>
+                          <input formControlName="password" type="password" id="input-password" placeholder="At least 8 characters" required>
                       </div>
 
                       <div class="login-form-submit-btn">
-                          <button>Sign in</button>
+                          <button (click)="submitLogin()">Sign in</button>
                       </div>
                       <div class="login-form-5">
-                          <p>Already have an account? <a routerLink="/auth/register">Sign In</a></p>
+                          <p>Already have an account? <a routerLink="/auth/register">Sign Up</a></p>
                       </div>
                   </form>
 
