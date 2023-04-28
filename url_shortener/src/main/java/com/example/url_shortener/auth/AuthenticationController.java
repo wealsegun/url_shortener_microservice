@@ -16,7 +16,7 @@ public class AuthenticationController {
         if(response.getToken()!=null) {
             return  ResponseEntity.ok(response);
         } else {
-            return (ResponseEntity<AuthenticationResponse>) ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
     }
     @PostMapping("/authenticate")

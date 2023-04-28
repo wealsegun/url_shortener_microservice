@@ -82,39 +82,74 @@ public class UrlShortenerService {
         }
         return tinyUrl;
     }
-    public String shortenUrlWithBitly(String longUrl) {
-        String shortUrl = "";
-        try {
-            URL url = new URL("https://api-ssl.bitly.com/v4/shorten");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
-            connection.setDoOutput(true);
-            String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"group_guid\": \"o_7kt4avusif\", \"title\": \"Bitly API Documentation\"}";
-//            String requestBody = "{\"long_url\":\"" + longUrl + "\" + \"domain\": \"bit.ly\"+ \"group_guid\": \"o_7kt4avusif\"+ \"title\": \"Bitly API Documentation\"}";
-            connection.getOutputStream().write(requestBody.getBytes());
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                Scanner scanner = new Scanner(connection.getInputStream());
-                while (scanner.hasNext()) {
-                    shortUrl += scanner.next();
-                }
-                scanner.close();
+//    public String shortenUrlWithBitly(String longUrl) {
+//        String shortUrl = "";
+//        try {
+//            URL url = new URL("https://api-ssl.bitly.com/v4/shorten");
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setRequestMethod("POST");
+//            connection.setRequestProperty("Content-Type", "application/json");
+//            connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
+//            connection.setDoOutput(true);
+//            String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"o_7kt4avusif\": \"Ba1bc23dE4F\"}";
+////            String requestBody = "{\"long_url\":\"" + longUrl + "\" + \"domain\": \"bit.ly\"+ \"group_guid\": \"o_7kt4avusif\"+ \"title\": \"Bitly API Documentation\"}";
+//            connection.getOutputStream().write(requestBody.getBytes());
+//            connection.connect();
+//            int responseCode = connection.getResponseCode();
+//            if (responseCode == 200) {
+//                Scanner scanner = new Scanner(connection.getInputStream());
+//                while (scanner.hasNext()) {
+//                    shortUrl += scanner.next();
+//                }
+//                scanner.close();
+//            }
+//            else {
+//                Scanner scanner = new Scanner(connection.getErrorStream());
+//                while (scanner.hasNext()) {
+//                    System.out.println(scanner.next());
+//                }
+//                scanner.close();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return shortUrl;
+//    }
+public String shortenUrlWithBitly(String longUrl) {
+    String shortUrl = "";
+    try {
+        URL url = new URL("https://api-ssl.bitly.com/v4/shorten");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
+        connection.setDoOutput(true);
+//        String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"o_7kt4avusif\": \"Ba1bc23dE4F\"}";
+//        String requestBody = "{\"long_url\":\"" + longUrl + "\"}";
+
+        String requestBody = "{\"o_7kt4avusif\": \"o_7kt4avusif\", \"domain\": \"bit.ly\", \"long_url\": \""+longUrl+ "\" }";
+        connection.getOutputStream().write(requestBody.getBytes());
+        connection.connect();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            Scanner scanner = new Scanner(connection.getInputStream());
+            while (scanner.hasNext()) {
+                shortUrl += scanner.next();
             }
-            else {
-                Scanner scanner = new Scanner(connection.getErrorStream());
-                while (scanner.hasNext()) {
-                    System.out.println(scanner.next());
-                }
-                scanner.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            scanner.close();
         }
-        return shortUrl;
+        else {
+            Scanner scanner = new Scanner(connection.getErrorStream());
+            while (scanner.hasNext()) {
+                System.out.println(scanner.next());
+            }
+            scanner.close();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+    return shortUrl;
+}
 
     public String customizedUrl(String longUrl) {
         return longUrl;
