@@ -3,14 +3,15 @@ package com.example.url_shortener.urlShortener;
 import com.example.url_shortener.url.Shortener;
 import com.example.url_shortener.url.URLShortenerRepository;
 import com.example.url_shortener.user.UserRepository;
+import io.jsonwebtoken.io.Encoders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -42,7 +43,7 @@ public class UrlShortenerService {
                     .shortenedBitlyUrl(shortenUrlWithBitly(request.getLongUrl()))
                     .userEmail(request.getUserEmail())
                     .isCustomRequested(request.isCustomRequested())
-                    .customUrl(customizedUrl(request.getLongUrl()))
+                    .customUrl(generateShortCode(request.getLongUrl()))
                     .createdDate(new Date(currentTimeMillis))
                     .expiryDate(new Date(expiryTimeMillis))
                     .build();
@@ -63,7 +64,7 @@ public class UrlShortenerService {
         return true;
     }
     public String shortenUrl(String longUrl) {
-        String tinyUrl = "";
+        StringBuilder tinyUrl = new StringBuilder();
         try {
             URL url = new URL("http://tinyurl.com/api-create.php?url=" + longUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -73,50 +74,17 @@ public class UrlShortenerService {
             if (responseCode == 200) {
                 Scanner scanner = new Scanner(connection.getInputStream());
                 while (scanner.hasNext()) {
-                    tinyUrl += scanner.next();
+                    tinyUrl.append(scanner.next());
                 }
                 scanner.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return tinyUrl;
+        return tinyUrl.toString();
     }
-//    public String shortenUrlWithBitly(String longUrl) {
-//        String shortUrl = "";
-//        try {
-//            URL url = new URL("https://api-ssl.bitly.com/v4/shorten");
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setRequestMethod("POST");
-//            connection.setRequestProperty("Content-Type", "application/json");
-//            connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
-//            connection.setDoOutput(true);
-//            String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"o_7kt4avusif\": \"Ba1bc23dE4F\"}";
-////            String requestBody = "{\"long_url\":\"" + longUrl + "\" + \"domain\": \"bit.ly\"+ \"group_guid\": \"o_7kt4avusif\"+ \"title\": \"Bitly API Documentation\"}";
-//            connection.getOutputStream().write(requestBody.getBytes());
-//            connection.connect();
-//            int responseCode = connection.getResponseCode();
-//            if (responseCode == 200) {
-//                Scanner scanner = new Scanner(connection.getInputStream());
-//                while (scanner.hasNext()) {
-//                    shortUrl += scanner.next();
-//                }
-//                scanner.close();
-//            }
-//            else {
-//                Scanner scanner = new Scanner(connection.getErrorStream());
-//                while (scanner.hasNext()) {
-//                    System.out.println(scanner.next());
-//                }
-//                scanner.close();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return shortUrl;
-//    }
 public String shortenUrlWithBitly(String longUrl) {
-    String shortUrl = "";
+    StringBuilder shortUrl = new StringBuilder();
     try {
         URL url = new URL("https://api-ssl.bitly.com/v4/shorten");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -124,34 +92,38 @@ public String shortenUrlWithBitly(String longUrl) {
         connection.setRequestProperty("Accept", "application/json");
         connection.setRequestProperty("Authorization", "Bearer " + BITLY_ACCESS_TOKEN);
         connection.setDoOutput(true);
-//        String requestBody = "{\"long_url\":\"" + longUrl + "\", \"domain\": \"bit.ly\", \"o_7kt4avusif\": \"Ba1bc23dE4F\"}";
-//        String requestBody = "{\"long_url\":\"" + longUrl + "\"}";
-
-        String requestBody = "{\"o_7kt4avusif\": \"o_7kt4avusif\", \"domain\": \"bit.ly\", \"long_url\": \""+longUrl+ "\" }";
+        String requestBody = "{\"group_guid\": \"Bn4paPI0UVc\", \"domain\": \"bit.ly\", \"long_url\": \""+longUrl+ "\" }";
         connection.getOutputStream().write(requestBody.getBytes());
         connection.connect();
         int responseCode = connection.getResponseCode();
+        Scanner scanner;
         if (responseCode == 200) {
-            Scanner scanner = new Scanner(connection.getInputStream());
+            scanner = new Scanner(connection.getInputStream());
             while (scanner.hasNext()) {
-                shortUrl += scanner.next();
+                shortUrl.append(scanner.next());
             }
-            scanner.close();
         }
         else {
-            Scanner scanner = new Scanner(connection.getErrorStream());
+            scanner = new Scanner(connection.getErrorStream());
             while (scanner.hasNext()) {
                 System.out.println(scanner.next());
             }
-            scanner.close();
         }
+        scanner.close();
     } catch (IOException e) {
         e.printStackTrace();
     }
-    return shortUrl;
+    return shortUrl.toString();
 }
 
-    public String customizedUrl(String longUrl) {
-        return longUrl;
+
+    private String generateShortCode(String longUrl) {
+        // Generate a unique, base62-encoded ID for the long URL
+        // You can use any algorithm you like here, as long as it generates short, unique codes
+        String uniqueId = Encoders.BASE64.encode(longUrl.getBytes());
+
+        // Truncate the ID to the desired length (e.g. 6 characters)
+
+        return uniqueId.substring(0, 6);
     }
 }
