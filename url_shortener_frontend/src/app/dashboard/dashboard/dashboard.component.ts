@@ -12,29 +12,31 @@ import { DashboardService } from '../services/dashboard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { DataSource } from '@angular/cdk/table';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateUrlComponent } from '../create-url/create-url.component';
+
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit , AfterViewInit {
   userProfile: UserProfileModel | null | undefined;
   userUrls!: UserGeneratedUrlModel[];
   userUrl!: UserGeneratedUrlModel;
   @Input() response: any;
+  totalUrl: any = 0;
   displayedColumns: string[] = [
-    'id',
+
     'urlName',
     'longUrl',
     'tinyUrl',
     'shortenedBitlyUrl',
-    'userEmail',
     'customUrl',
+    'customRequested',
     'expiryDate',
     'createdDate',
-    'customRequested',
   ];
   dataSource = new MatTableDataSource<UserGeneratedUrlModel>(this.userUrls);
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator){
@@ -44,17 +46,15 @@ export class DashboardComponent implements OnInit {
     this.dataSource.sort = sort;
   }
 
-
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
-  // @ViewChild(MatSort) sort!: MatSort;
-
   constructor(
     private currentService: CurrentUserService,
-    private service: DashboardService
+    private service: DashboardService,
+    private dialog: MatDialog
   ) {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
@@ -72,6 +72,8 @@ export class DashboardComponent implements OnInit {
     this.service.getUserUrlList(userEmail).subscribe((response) => {
       this.userUrls = response;
       this.dataSource = response;
+      console.log(this.dataSource);
+      this.totalUrl = this.userUrls.length;
     });
   }
 
@@ -79,5 +81,9 @@ export class DashboardComponent implements OnInit {
     this.service.getUserUrl(userEmail, id).subscribe((response) => {
       this.userUrl = response;
     });
+  }
+
+  openPopup() {
+    const dialogRef = this.dialog.open(CreateUrlComponent);
   }
 }
