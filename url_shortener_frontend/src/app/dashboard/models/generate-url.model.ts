@@ -1,7 +1,7 @@
 export interface GenerateUrlModel {
-  urlName: string;
-  longUrl: string;
-  userEmail: string;
+  urlName: string| undefined;
+  longUrl: string| undefined;
+  userEmail: string | undefined;
   isCustomRequested: boolean | false;
 
 }

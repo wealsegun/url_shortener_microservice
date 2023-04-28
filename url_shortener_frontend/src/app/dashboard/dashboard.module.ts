@@ -9,7 +9,9 @@ import { CreateUrlComponent } from './create-url/create-url.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../http_interceptor/http_interceptor';
 
 
 
@@ -21,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     DashboardRoutingModule,
     ReactiveFormsModule,
     MatTableModule,
@@ -28,6 +31,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule
   ],
   bootstrap: [ CreateUrlComponent ],
-  providers:[DashboardService]
+  providers:[DashboardService,
+  {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }]
 })
 export class DashboardModule { }

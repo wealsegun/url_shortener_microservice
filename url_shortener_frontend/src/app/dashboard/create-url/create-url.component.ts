@@ -1,7 +1,10 @@
+import { UserProfileModel } from './../../auth/models/user-profile.model';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from '../services/dashboard.service';
 import { CurrentUserService } from '../../auth/services/current-user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorSnackBarconfig, SuccessSnackBarconfig } from '../../shared-module/models/notification-snackbar.model';
 
 @Component({
   selector: 'app-create-url',
@@ -12,8 +15,10 @@ export class CreateUrlComponent implements OnInit {
   url: string = '';
   generateUrlFormGroup!: FormGroup;
   customRequested: boolean = false;
+  userEmail!: string | undefined;
+  // isCustomRequested: boolean | false| undefined
 
-  constructor(private service: DashboardService, private fb: FormBuilder, private currentService: CurrentUserService) {
+  constructor(private service: DashboardService, private fb: FormBuilder, private currentService: CurrentUserService, private snackbar: MatSnackBar) {
 
     this.generateUrlFormGroup = this.fb.group({
       urlName: ['', Validators.required],
@@ -24,6 +29,7 @@ export class CreateUrlComponent implements OnInit {
   }
   ngOnInit(): void {
 
+    this.userEmail = this.currentService.getUserProfile()?.email;
   }
 
   get urlName() {
@@ -41,7 +47,23 @@ export class CreateUrlComponent implements OnInit {
   @Output() submitEvent = new EventEmitter<{url: string, customRequested: boolean}>();
 
   submit() {
-    this.submitEvent.emit({url: this.url, customRequested: this.customRequested});
+    const url = {
+      urlName: this.urlName?.value,
+      longUrl: this.longUrl?.value,
+      userEmail: this.userEmail,
+      isCustomRequested: this.isCustomRequested?.value
+    }
+    this.service.generateURL(url).subscribe(response => {
+      if(response) {
+        this.snackbar.open("URL generated successful", "Close", SuccessSnackBarconfig)
+        this.submitEvent.emit(response);
+      } else {
+        this.snackbar.open("URL generated", "Close", ErrorSnackBarconfig);
+      }
+    }, error=> {
+      this.snackbar.open(error.error ?? "URL generated", "Close", ErrorSnackBarconfig);
+    })
+
   }
 }
 

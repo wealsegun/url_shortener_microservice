@@ -4,6 +4,8 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { UserProfileModel } from '../../auth/models/user-profile.model';
 import { CurrentUserService } from '../../auth/services/current-user.service';
@@ -14,6 +16,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUrlComponent } from '../create-url/create-url.component';
+import { SuccessSnackBarconfig, ErrorSnackBarconfig } from 'src/app/shared-module/models/notification-snackbar.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -21,11 +25,12 @@ import { CreateUrlComponent } from '../create-url/create-url.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit , AfterViewInit {
+export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
   userProfile: UserProfileModel | null | undefined;
   userUrls!: UserGeneratedUrlModel[];
   userUrl!: UserGeneratedUrlModel;
-  @Input() response: any;
+  // @Input() response: any;
+  @Input() submitEvent: any;
   totalUrl: any = 0;
   displayedColumns: string[] = [
 
@@ -49,7 +54,8 @@ export class DashboardComponent implements OnInit , AfterViewInit {
   constructor(
     private currentService: CurrentUserService,
     private service: DashboardService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar
   ) {}
 
   ngAfterViewInit() {
@@ -61,6 +67,9 @@ export class DashboardComponent implements OnInit , AfterViewInit {
     this.getUserProfile();
     const profi = this.currentService.getUserProfile();
     this.getUrlList(profi?.email as string);
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+this.onSubmit(this.submitEvent);
   }
 
   getUserProfile() {
@@ -85,5 +94,21 @@ export class DashboardComponent implements OnInit , AfterViewInit {
 
   openPopup() {
     const dialogRef = this.dialog.open(CreateUrlComponent);
+  }
+
+
+  onSubmit(url: any) {
+
+    this.service.generateURL(url).subscribe(response => {
+      if(response) {
+        this.snackbar.open("URL generated successful", "Close", SuccessSnackBarconfig)
+        this.submitEvent.emit(response);
+      } else {
+        this.snackbar.open("URL generated", "Close", ErrorSnackBarconfig);
+      }
+    }, error=> {
+      this.snackbar.open(error.error ??"URL generated", "Close", ErrorSnackBarconfig);
+    })
+
   }
 }

@@ -21,12 +21,12 @@
   <div class="toggle-button-cover">
     <div class="button-cover">
       <div class="button r" id="button-1">
-        <input type="checkbox" class="checkbox" />
+        <input type="checkbox" class="checkbox" formControlName="isCustomRequested" />
         <div class="knobs"></div>
         <div class="layer"></div>
       </div>
     </div>
   </div>
-  <button class="bubbly-button">Generate URL</button>
+  <button class="bubbly-button" (click)="submit()">Generate URL</button>
   </form>
 </div>
