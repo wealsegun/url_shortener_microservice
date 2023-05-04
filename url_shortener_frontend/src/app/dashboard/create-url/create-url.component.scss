@@ -14,7 +14,7 @@ $font-weight-bold: 700;
 $font-size-base: 16px;
 
 $gutter: 10px;
-$border-radius: 4px;
+$border-radius: 2px;
 
 $color-primary: #31d47d;
 $background: #f4fcff;
@@ -133,10 +133,6 @@ a {
   }
 }
 
-div{
-  margin: 0.5rem;
-  // padding: 1rem;
-}
 
 .form-input {
   padding: 10px;
@@ -190,7 +186,6 @@ div{
 
   .form-input {
     width: 100%;
-    border-radius: 0.8rem;
   }
 
   .form-addon__addon {

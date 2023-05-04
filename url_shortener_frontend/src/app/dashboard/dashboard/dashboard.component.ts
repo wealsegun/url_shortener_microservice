@@ -29,9 +29,7 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
   userProfile: UserProfileModel | null | undefined;
   userUrls!: UserGeneratedUrlModel[];
   userUrl!: UserGeneratedUrlModel;
-  // @Input() response: any;
   @Input() submitEvent: any;
-  totalUrl: any = 0;
   displayedColumns: string[] = [
 
     'urlName',
@@ -67,6 +65,7 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
     this.getUserProfile();
     const profi = this.currentService.getUserProfile();
     this.getUrlList(profi?.email as string);
+
   }
   ngOnChanges(changes: SimpleChanges): void {
 this.onSubmit(this.submitEvent);
@@ -82,7 +81,7 @@ this.onSubmit(this.submitEvent);
       this.userUrls = response;
       this.dataSource = response;
       console.log(this.dataSource);
-      this.totalUrl = this.userUrls.length;
+      this.currentService.addURLCount(this.userUrls.length);
     });
   }
 
