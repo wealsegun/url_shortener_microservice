@@ -6,7 +6,7 @@
 
   </form>
 </div> -->
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
 <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 
 <div class="testbox">
@@ -29,4 +29,79 @@
   </div>
   <button class="bubbly-button" (click)="submit()">Generate URL</button>
   </form>
-</div>
+</div> -->
+<div class="toaster"></div>
+
+<main class="wrapper">
+  <section class="section-form">
+    <div class="">
+      <h1>Create Short URL</h1>
+      <p>Tiny URL are exceedingly handy to share through sms/tweets</p>
+
+      <form
+        name="signup"
+        class="form"
+        novalidate
+        [formGroup]="generateUrlFormGroup"
+      >
+        <div class="form-group">
+          <label for="name" class="form-label form-label--required">
+            Name/Alias:
+          </label>
+
+          <div class="form-addon" data-states-for="name">
+            <div class="form-addon__addon">
+              <span class="icon-name"></span>
+            </div>
+
+            <input
+              type="text"
+              formControlName="urlName"
+              class="form-input"
+              placeholder="LinkedIn"
+              required
+            />
+
+            <span class="form-addon__icon icon-valid"></span>
+            <span class="form-addon__icon icon-invalid"></span>
+          </div>
+          <!-- <div data-errors-for="name">
+            <small class="form-error" data-errors-when="valueMissing">
+              This field is required.
+            </small>
+          </div> -->
+        </div>
+        <div class="form-group">
+          <label for="email" class="form-label form-label--required">
+            Long URL
+          </label>
+          <div class="form-addon" data-states-for="email">
+            <div class="form-addon__addon">
+              <span class="icon-email"></span>
+            </div>
+            <input
+              type="text"
+              formControlName="longUrl"
+              class="form-input"
+              placeholder="https://dashboard.render.com/url-shortener"
+              required
+            />
+            <span class="form-addon__icon icon-valid"></span>
+            <span class="form-addon__icon icon-invalid"></span>
+
+          </div>
+          <label for="email" class="form-label form-label--required">
+           Do you want cutomised URL?
+          </label>
+          <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" checked  (click)="setCustomRequested(true)">
+          <label for="toggle-on" class="btn">Yes</label>
+          <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio"  (click)="setCustomRequested(false)">
+          <label for="toggle-off" class="btn">No</label>
+        </div>
+        <div class="form-footer">
+          <button type="submit" class="button"  (click)="submit()">Generate URL</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>

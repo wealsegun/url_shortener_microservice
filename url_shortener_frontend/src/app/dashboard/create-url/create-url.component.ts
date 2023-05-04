@@ -16,16 +16,15 @@ export class CreateUrlComponent implements OnInit {
   generateUrlFormGroup!: FormGroup;
   customRequested: boolean = false;
   userEmail!: string | undefined;
-  // isCustomRequested: boolean | false| undefined
+  isCustomRequested: boolean = false;
 
   constructor(private service: DashboardService, private fb: FormBuilder, private currentService: CurrentUserService, private snackbar: MatSnackBar) {
 
     this.generateUrlFormGroup = this.fb.group({
       urlName: ['', Validators.required],
       longUrl: ['', Validators.required],
-      isCustomRequested: [false, Validators.required]
+      // isCustomRequested: [false, Validators.required]
     })
-
   }
   ngOnInit(): void {
 
@@ -40,23 +39,27 @@ export class CreateUrlComponent implements OnInit {
     return this.generateUrlFormGroup.get('longUrl');
   }
 
-  get isCustomRequested() {
-    return this.generateUrlFormGroup.get('isCustomRequested');
-  }
+  // get isCustomRequested() {
+  //   return this.generateUrlFormGroup.get('isCustomRequested');
+  // }
 
   @Output() submitEvent = new EventEmitter<{url: string, customRequested: boolean}>();
 
+  setCustomRequested(value: boolean) {
+    this.isCustomRequested = value;
+
+  }
   submit() {
     const url = {
       urlName: this.urlName?.value,
       longUrl: this.longUrl?.value,
       userEmail: this.userEmail,
-      isCustomRequested: this.isCustomRequested?.value
+      isCustomRequested: this.isCustomRequested
     }
     this.service.generateURL(url).subscribe(response => {
       if(response) {
         this.snackbar.open("URL generated successful", "Close", SuccessSnackBarconfig)
-        this.submitEvent.emit(response);
+
       } else {
         this.snackbar.open("URL generated", "Close", ErrorSnackBarconfig);
       }
