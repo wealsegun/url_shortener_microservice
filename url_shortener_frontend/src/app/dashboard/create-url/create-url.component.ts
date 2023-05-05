@@ -66,6 +66,7 @@ export class CreateUrlComponent implements OnInit {
       userEmail: this.userEmail,
       isCustomRequested: this.isCustomRequested,
     };
+    console.log(url);
     this.service.generateURL(url).subscribe(
       (response) => {
         if (response) {

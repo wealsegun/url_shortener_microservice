@@ -95,6 +95,10 @@ this.onSubmit(this.submitEvent);
     const dialogRef = this.dialog.open(CreateUrlComponent);
   }
 
+  SendCountDetails(url: any) {
+
+  }
+
 
   onSubmit(url: any) {
 

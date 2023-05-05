@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '../../auth/services/current-user.service';
 import { UserProfileModel } from '../../auth/models/user-profile.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -10,7 +11,7 @@ import { UserProfileModel } from '../../auth/models/user-profile.model';
 export class DashboardLayoutComponent implements OnInit {
   userProfile: UserProfileModel | null | undefined;
   totalUrl: any = 0;
-  constructor(private currentService: CurrentUserService) {}
+  constructor(private currentService: CurrentUserService, private router: Router) {}
 
   ngOnInit(): void {
     this.getUserProfile();
@@ -20,5 +21,10 @@ export class DashboardLayoutComponent implements OnInit {
   getUserProfile() {
     let userProfile = this.currentService.getUserProfile();
     this.userProfile = userProfile;
+  }
+
+  logout() {
+    this.currentService.logoutUser();
+    this.router.navigate(["/auth/login"])
   }
 }

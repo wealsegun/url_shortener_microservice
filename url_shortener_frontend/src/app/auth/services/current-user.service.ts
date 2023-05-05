@@ -30,23 +30,29 @@ export class CurrentUserService {
     console.log(userProfile);
     localStorage.setItem('user_profile', JSON.stringify(userProfile));
   }
+  addURLCount(url: number) {
+    localStorage.setItem('urlCount', JSON.stringify(url));
+  }
+  getURLCount() {
+    return localStorage.getItem('urlCount');
+  }
   addToken(token: Token) {
     console.log(token);
     localStorage.setItem('token', JSON.stringify(token.token));
   }
-  logout() {
-    console.log(this.getUserProfile());
-    const userId = this.getUserProfile()?.id;
-    this.logoutUser(userId ?? 0).subscribe((response) => {
-      if (response) {
-        localStorage.removeItem('user_profile');
-        localStorage.removeItem('token');
-      } else {
-      }
-    });
-  }
-  logoutUser(userId: number) {
-    const url = environment.baseUrl + `Account/logout?userId=${userId}`;
-    return this.httpClient.post<any>(url, userId);
+  // logout() {
+  //   console.log(this.getUserProfile());
+  //   const userId = this.getUserProfile()?.id;
+  //   this.logoutUser(userId ?? 0).subscribe((response) => {
+  //     if (response) {
+  //       localStorage.removeItem('user_profile');
+  //       localStorage.removeItem('token');
+  //     } else {
+  //     }
+  //   });
+  // }
+  logoutUser() {
+    localStorage.removeItem("user_profile");
+    localStorage.removeItem("token")
   }
 }

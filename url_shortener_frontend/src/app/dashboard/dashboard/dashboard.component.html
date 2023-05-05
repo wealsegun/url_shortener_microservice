@@ -52,19 +52,19 @@
       <!-- User Url Column -->
       <ng-container matColumnDef="longUrl">
         <th mat-header-cell *matHeaderCellDef> User Url </th>
-        <td mat-cell *matCellDef="let element"> {{element.longUrl}} </td>
+        <td mat-cell *matCellDef="let element"> <a (click)="SendCountDetails(element.shortenedBitlyUrl)" href={{element.longUrl}}> Short Url</a> </td>
       </ng-container>
 
       <!-- Bitly Column -->
       <ng-container matColumnDef="shortenedBitlyUrl">
         <th mat-header-cell *matHeaderCellDef> Bitly </th>
-        <td mat-cell *matCellDef="let element"> {{element.shortenedBitlyUrl}} </td>
+        <td mat-cell *matCellDef="let element"> <a (click)="SendCountDetails(element.shortenedBitlyUrl)" href={{element.shortenedBitlyUrl}}>Bitly</a> </td>
       </ng-container>
 
       <!-- Tiny Column -->
       <ng-container matColumnDef="tinyUrl">
         <th mat-header-cell *matHeaderCellDef> Tiny </th>
-        <td mat-cell *matCellDef="let element"> {{element.tinyUrl}} </td>
+        <td mat-cell *matCellDef="let element"><a (click)="SendCountDetails(element.shortenedBitlyUrl)" href= {{element.tinyUrl}}> Tiny </a> </td>
       </ng-container>
       <!-- Custom Requested Column -->
       <ng-container matColumnDef="customRequested">

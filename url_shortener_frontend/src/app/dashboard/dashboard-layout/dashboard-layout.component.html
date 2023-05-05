@@ -9,7 +9,7 @@
 			<li>News</li>
 			<li>About</li>
 			<li>Contact</li> -->
-			<li>Log out</li>
+			<li (click)="logout()">Log out</li>
 		</ul>
 		<div class="title">Welcome back, {{userProfile?.firstName}}!</div>
     <div class="note">Recent: <span class="focus"> {{totalUrl}} </span> URL's <span class="focus"> generated</span> since Saturday,</div>
