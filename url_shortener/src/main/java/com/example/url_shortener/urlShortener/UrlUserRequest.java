@@ -14,5 +14,5 @@ public class UrlUserRequest {
     private String urlName;
     private  String longUrl;
     private  String userEmail;
-    private  boolean isCustomRequested;
+    private  Boolean isCustomRequested;
 }

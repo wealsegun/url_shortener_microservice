@@ -17,7 +17,7 @@ public class UrlShortenerResponse {
     private  String tinyUrl;
     private  String shortenedBitlyUrl;
     private  String userEmail;
-    private  boolean isCustomRequested;
+    private  Boolean isCustomRequested;
     private String customUrl;
     private  Date  expiryDate;
     private Date createdDate;

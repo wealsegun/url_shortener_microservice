@@ -1,9 +1,11 @@
 package com.example.url_shortener.urlShortener;
 import com.example.url_shortener.url.Shortener;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 //@Controller
@@ -28,6 +30,17 @@ public class UrlShortenerController {
     public ResponseEntity<List<Shortener>> GetUrlsByUserEmail(@PathVariable String userEmail) {
         return ResponseEntity.ok(service.getShortenedUrlsByUserEmail(userEmail));
     }
+
+//    @GetMapping("/{alias}")
+//    public void redirect(@PathVariable String alias, HttpServletResponse) throws IOException {
+//        String longUrl = service.getLongUrl(alias);
+//        if (longUrl != null) {
+//            service.incrementClickCount(alias);
+//            httpServletResponse.sendRedirect(longUrl);
+//        } else {
+//            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+//        }
+//    }
 
 //    @GetMapping("/links")
 //    public ResponseEntity<String> GetUrl() {
