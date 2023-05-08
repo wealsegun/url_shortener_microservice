@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,8 +21,9 @@ public class ShortCount {
     @Id
     @GeneratedValue
     private  Integer id;
-    private  Integer userId;
-    private  String  clickUrlName;
-    private String   ClickedLink;
+    private  String userEmail;
+    private  String clickUrlName;
+    private String  clickedLink;
+    private Date dateCreated;
 
 }

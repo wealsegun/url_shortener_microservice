@@ -1,5 +1,6 @@
 package com.example.url_shortener.config;
 
+import com.example.url_shortener.url.ShortCountRepository;
 import com.example.url_shortener.url.URLShortenerRepository;
 import com.example.url_shortener.urlShortener.UrlShortenerService;
 import com.example.url_shortener.user.UserRepository;
@@ -23,6 +24,7 @@ public class ApplicationConfig {
 
     private  final UserRepository repository;
     private final URLShortenerRepository urlRepository;
+    private final ShortCountRepository shortCountRepository;
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByEmail(username)

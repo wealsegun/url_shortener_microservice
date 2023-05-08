@@ -1,10 +1,10 @@
 package com.example.url_shortener.urlShortener;
 
 import com.example.url_shortener.url.ShortCount;
+import com.example.url_shortener.url.ShortCountRepository;
 import com.example.url_shortener.url.Shortener;
 import com.example.url_shortener.url.URLShortenerRepository;
 import com.example.url_shortener.user.UserRepository;
-import fr.plaisance.bitly.Bitly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-import static fr.plaisance.bitly.Bit.ly;
-
 @Service
 @RequiredArgsConstructor
 public class UrlShortenerService {
     private final UserRepository repository;
     private final URLShortenerRepository urlRepository;
+    private final ShortCountRepository shortCountRepository;
     private static final String BITLY_ACCESS_TOKEN = "63b1526d98e86a26ea1cb06123d33cd2d43eb5b8"; // Replace with your Bitly access token
 
     public Shortener getShortenedUrlById(String userEmail, Integer id) {
@@ -68,11 +67,19 @@ public class UrlShortenerService {
         return true;
     }
 
-    public String NewSHortenUrl(String longUrl) {
-        String shortUrl = "";
-        Bitly bitly = ly(BITLY_ACCESS_TOKEN);
-        shortUrl = bitly.shorten(longUrl);
-        return shortUrl;
+    public boolean createUserShortCount(ShortCountRequest request) {
+        repository.findByEmail(request.getUserEmail()).orElseThrow();
+        ShortCount shortCount;
+        shortCount = ShortCount.builder()
+                .userEmail(request.getUserEmail())
+                .clickUrlName(request.getClickUrlName())
+                .clickedLink(request.getClickedLink())
+                .dateCreated(request.getDateCreated()).build();
+        shortCountRepository.save(shortCount);
+        return shortCount.getId() > 0;
+
+
+
     }
 
     public String shortenUrl(String longUrl) {
@@ -132,13 +139,11 @@ public class UrlShortenerService {
         // Generate a unique identifier or use an algorithm to create a short URL
         String uniqueIdentifier = generateUniqueIdentifier();
         // Encode the unique identifier to create the short URL
-        String shortUrl = encodeShortUrl(uniqueIdentifier);
-        return shortUrl;
+        return encodeShortUrl(uniqueIdentifier);
     }
 
     public String generateUrl(String alias) {
-        String url ="http://localhost:8080/api/v1/short/"+ alias;
-        return url;
+        return "http://localhost:8080/api/v1/short/"+ alias;
     }
 
     private String generateUniqueIdentifier() {
@@ -168,6 +173,20 @@ public class UrlShortenerService {
 
     public String getLongUrl(String alias) {
         Shortener shortener = urlRepository.findByAlias(alias);
-        return shortener != null ? shortener.getLongUrl() : null;
+        long currentTimeMillis = System.currentTimeMillis();
+        ShortCountRequest request;
+        request = ShortCountRequest.builder()
+                .userEmail(shortener.getUserEmail())
+                .clickUrlName(shortener.getUrlName())
+                .clickedLink(shortener.getCustomUrl())
+                .dateCreated(new Date(currentTimeMillis)).build();
+        createUserShortCount(request);
+        return shortener.getLongUrl();
+    }
+
+
+    public Integer shortCountByUserEmail(String userEmail, String clickedLink) {
+        List<ShortCount> shortCounts = shortCountRepository.findAllByUserEmailAndUrl(userEmail, clickedLink);
+        return shortCounts.size();
     }
 }

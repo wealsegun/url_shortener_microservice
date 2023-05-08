@@ -16,22 +16,24 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUrlComponent } from '../create-url/create-url.component';
-import { SuccessSnackBarconfig, ErrorSnackBarconfig } from 'src/app/shared-module/models/notification-snackbar.model';
+import {
+  SuccessSnackBarconfig,
+  ErrorSnackBarconfig,
+} from 'src/app/shared-module/models/notification-snackbar.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CreateCountModel } from '../models/create-count.model';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
+export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   userProfile: UserProfileModel | null | undefined;
   userUrls!: UserGeneratedUrlModel[];
   userUrl!: UserGeneratedUrlModel;
   @Input() submitEvent: any;
   displayedColumns: string[] = [
-
     'urlName',
     'longUrl',
     'tinyUrl',
@@ -42,10 +44,10 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
     'expiryDate',
   ];
   dataSource = new MatTableDataSource<UserGeneratedUrlModel>(this.userUrls);
-  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator){
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  @ViewChild(MatSort) set sort(sort: MatSort){
+  @ViewChild(MatSort) set sort(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
@@ -65,10 +67,9 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
     this.getUserProfile();
     const profi = this.currentService.getUserProfile();
     this.getUrlList(profi?.email as string);
-
   }
   ngOnChanges(changes: SimpleChanges): void {
-this.onSubmit(this.submitEvent);
+    this.onSubmit(this.submitEvent);
   }
 
   getUserProfile() {
@@ -95,24 +96,45 @@ this.onSubmit(this.submitEvent);
     const dialogRef = this.dialog.open(CreateUrlComponent);
   }
 
-  SendCountDetails(url: any) {
-    console.log(url);
+  SendCountDetails(userUrl: any) {
+    console.log(userUrl);
+    const url: CreateCountModel = {
+      id: 0,
+      ClickedLink: userUrl.customUrl,
+      clickUrlName: userUrl.urlName,
+      userEmail: this.userProfile?.email,
+    };
 
+    this.service.createUrlCount(url).subscribe((response) => {
+      console.log(response);
+    });
   }
 
+  getCount(userEmail: string) {
+    console.log(userEmail);
+  }
 
   onSubmit(url: any) {
-
-    this.service.generateURL(url).subscribe(response => {
-      if(response) {
-        this.snackbar.open("URL generated successful", "Close", SuccessSnackBarconfig)
-        this.submitEvent.emit(response);
-      } else {
-        this.snackbar.open("URL generated", "Close", ErrorSnackBarconfig);
+    this.service.generateURL(url).subscribe(
+      (response) => {
+        if (response) {
+          this.snackbar.open(
+            'URL generated successful',
+            'Close',
+            SuccessSnackBarconfig
+          );
+          this.submitEvent.emit(response);
+        } else {
+          this.snackbar.open('URL generated', 'Close', ErrorSnackBarconfig);
+        }
+      },
+      (error) => {
+        this.snackbar.open(
+          error.error ?? 'URL generated',
+          'Close',
+          ErrorSnackBarconfig
+        );
       }
-    }, error=> {
-      this.snackbar.open(error.error ??"URL generated", "Close", ErrorSnackBarconfig);
-    })
-
+    );
   }
 }

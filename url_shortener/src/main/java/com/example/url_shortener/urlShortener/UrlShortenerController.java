@@ -21,9 +21,13 @@ public class UrlShortenerController {
     private  final  UrlShortenerService service;
     @PostMapping("/generate")
     public ResponseEntity<Boolean> generate(@RequestBody UrlUserRequest request) {
-        System.out.println(request);
         return ResponseEntity.ok(service.createUserShortenedUrl(request));
     }
+
+//    @PostMapping("/count-create")
+//    public ResponseEntity<Boolean> createCount(@RequestBody ShortCountRequest request) {
+//        return  ResponseEntity.ok(service.createUserShortCount(request));
+//    }
 
     @GetMapping("/link/{userEmail}/data/{id}")
     public ResponseEntity<Shortener> GetShortenedUrlByUserEmail(@PathVariable String userEmail, @PathVariable Integer id) {
@@ -49,6 +53,12 @@ public class UrlShortenerController {
             return new ResponseEntity<Void>(headers, HttpStatus.MOVED_PERMANENTLY);
         }
     }
+
+    @GetMapping("/{userEmail}/{clickedLink}")
+    public ResponseEntity<Integer> getShortCount(@PathVariable String userEmail, @PathVariable String clickedLink) {
+        return ResponseEntity.ok(service.shortCountByUserEmail(userEmail, clickedLink));
+    }
+
 
 
 }
