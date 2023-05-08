@@ -20,9 +20,7 @@ public class ShortCount {
     @GeneratedValue
     private  Integer id;
     private  Integer userId;
-    private  String  aliasName;
     private  String  clickUrlName;
-    private Integer  noOfClicked;
     private String   ClickedLink;
 
 }

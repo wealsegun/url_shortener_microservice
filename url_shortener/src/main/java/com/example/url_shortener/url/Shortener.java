@@ -26,10 +26,17 @@ public class Shortener {
     private  String userEmail;
     private  boolean isCustomRequested;
     private String customUrl;
+    private String alias;
     private  Date  expiryDate;
     private Date createdDate;
 
-
+    public String getLongUrl(String alias) {
+        Date currentDate = new Date(); // Get the current date
+        if (isCustomRequested && alias.equals(this.alias) && expiryDate != null && expiryDate.after(currentDate)) {
+            return longUrl;
+        }
+        return null;
+    }
 }
 
 

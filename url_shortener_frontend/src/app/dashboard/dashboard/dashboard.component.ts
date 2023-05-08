@@ -35,11 +35,11 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnChanges {
     'urlName',
     'longUrl',
     'tinyUrl',
-    'shortenedBitlyUrl',
+    // 'shortenedBitlyUrl',
     'customUrl',
     'customRequested',
-    'expiryDate',
     'createdDate',
+    'expiryDate',
   ];
   dataSource = new MatTableDataSource<UserGeneratedUrlModel>(this.userUrls);
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator){
@@ -96,6 +96,7 @@ this.onSubmit(this.submitEvent);
   }
 
   SendCountDetails(url: any) {
+    console.log(url);
 
   }
 

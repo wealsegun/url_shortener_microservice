@@ -52,19 +52,21 @@
       <!-- User Url Column -->
       <ng-container matColumnDef="longUrl">
         <th mat-header-cell *matHeaderCellDef> User Url </th>
-        <td mat-cell *matCellDef="let element"> <a (click)="SendCountDetails(element.shortenedBitlyUrl)" href={{element.longUrl}}> Short Url</a> </td>
+        <td mat-cell *matCellDef="let element"> <a  href={{element.longUrl}}> {{ element.longUrl.length > 15 ? element.longUrl.substring(0, 15) + '...' : element.longUrl }}
+        </a> </td>
       </ng-container>
 
       <!-- Bitly Column -->
-      <ng-container matColumnDef="shortenedBitlyUrl">
+      <!-- <ng-container matColumnDef="shortenedBitlyUrl">
         <th mat-header-cell *matHeaderCellDef> Bitly </th>
-        <td mat-cell *matCellDef="let element"> <a (click)="SendCountDetails(element.shortenedBitlyUrl)" href={{element.shortenedBitlyUrl}}>Bitly</a> </td>
-      </ng-container>
+        <td mat-cell *matCellDef="let element"> <a  href={{element.shortenedBitlyUrl}} target="_blank">Bitly</a> </td>
+      </ng-container> -->
 
       <!-- Tiny Column -->
       <ng-container matColumnDef="tinyUrl">
         <th mat-header-cell *matHeaderCellDef> Tiny </th>
-        <td mat-cell *matCellDef="let element"><a (click)="SendCountDetails(element.shortenedBitlyUrl)" href= {{element.tinyUrl}}> Tiny </a> </td>
+        <td mat-cell *matCellDef="let element"><a href= {{element.tinyUrl}} target="_blank"> {{ element.tinyUrl.length > 15 ? element.tinyUrl.substring(0, 15) + '...' : element.tinyUrl }}
+        </a> </td>
       </ng-container>
       <!-- Custom Requested Column -->
       <ng-container matColumnDef="customRequested">
@@ -74,7 +76,12 @@
         <!-- Custom Column -->
       <ng-container matColumnDef="customUrl">
         <th mat-header-cell *matHeaderCellDef> Custom </th>
-        <td mat-cell *matCellDef="let element"> {{element.customUrl}} </td>
+        <td mat-cell *matCellDef="let element"><a href={{element.customUrl}} (click)="SendCountDetails(element)" target="_blank">{{ element.customUrl.length > 15 ? element.customUrl.substring(0, 15) + '...' : element.customUrl }}</a> </td>
+      </ng-container>
+       <!-- Tiny Column -->
+       <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef> Created Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.createdDate | date: 'shortDate'}} </td>
       </ng-container>
         <!-- Tiny Column -->
       <ng-container matColumnDef="expiryDate">
@@ -82,11 +89,7 @@
         <td mat-cell *matCellDef="let element"> {{element.expiryDate | date: 'shortDate'}} </td>
       </ng-container>
 
-       <!-- Tiny Column -->
-       <ng-container matColumnDef="createdDate">
-        <th mat-header-cell *matHeaderCellDef> Created Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdDate | date: 'shortDate'}} </td>
-      </ng-container>
+
 
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
