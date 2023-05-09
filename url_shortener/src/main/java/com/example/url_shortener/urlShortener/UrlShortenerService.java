@@ -26,11 +26,30 @@ public class UrlShortenerService {
         return urlRepository.getShortenerById(id);
     }
 
-    public List<Shortener> getShortenedUrlsByUserEmail(String userEmail) {
+    public List<UrlShortenerResponse> getShortenedUrlsByUserEmail(String userEmail) {
+        List<UrlShortenerResponse> outputResponse = new ArrayList<>();
         repository.findByEmail(userEmail).orElseThrow();
-        return urlRepository.getShortenerByUserEmail(userEmail);
-    }
+        var response = urlRepository.getShortenerByUserEmail(userEmail);
 
+        for (var element : response) {
+            UrlShortenerResponse output = new UrlShortenerResponse();
+            output.setId(element.getId());
+            output.setUrlName(element.getUrlName());
+            output.setLongUrl(element.getLongUrl());
+            output.setTinyUrl(element.getTinyUrl());
+            output.setShortenedBitlyUrl(element.getShortenedBitlyUrl());
+            output.setUserEmail(element.getUserEmail());
+            output.setIsCustomRequested(element.isCustomRequested());
+            output.setClickedCount(shortCountByUserEmail(userEmail,element.getCustomUrl() ));
+            output.setCustomUrl(element.getCustomUrl());
+            output.setExpiryDate(element.getExpiryDate());
+            output.setCreatedDate(element.getCreatedDate());
+
+            outputResponse.add(output);
+        }
+
+        return outputResponse;
+    }
     public boolean createUserShortenedUrl(UrlUserRequest request) {
         long currentTimeMillis = System.currentTimeMillis();
         long expiryTimeMillis = currentTimeMillis + (24 * 60 * 60 * 1000); // add 24 hours in milliseconds
@@ -186,7 +205,7 @@ public class UrlShortenerService {
 
 
     public Integer shortCountByUserEmail(String userEmail, String clickedLink) {
-        List<ShortCount> shortCounts = shortCountRepository.findAllByUserEmailAndUrl(userEmail, clickedLink);
+        List<ShortCount> shortCounts = shortCountRepository.findAllByUserEmailAndClickedLink(userEmail, clickedLink);
         return shortCounts.size();
     }
 }

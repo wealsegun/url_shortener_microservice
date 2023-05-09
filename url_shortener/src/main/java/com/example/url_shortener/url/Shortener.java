@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -20,7 +19,8 @@ public class Shortener {
     @GeneratedValue
     private  Integer id;
     private String urlName;
-    private  String longUrl;
+    @Column(length = Integer.MAX_VALUE) // Set the length to maximum
+    private String longUrl;
     private  String tinyUrl;
     private  String shortenedBitlyUrl;
     private  String userEmail;

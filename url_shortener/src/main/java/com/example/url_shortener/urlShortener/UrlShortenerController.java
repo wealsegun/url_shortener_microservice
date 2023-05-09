@@ -1,13 +1,12 @@
 package com.example.url_shortener.urlShortener;
+
 import com.example.url_shortener.url.Shortener;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -24,17 +23,17 @@ public class UrlShortenerController {
         return ResponseEntity.ok(service.createUserShortenedUrl(request));
     }
 
-//    @PostMapping("/count-create")
-//    public ResponseEntity<Boolean> createCount(@RequestBody ShortCountRequest request) {
-//        return  ResponseEntity.ok(service.createUserShortCount(request));
-//    }
+    @PostMapping("/count-create")
+    public ResponseEntity<Boolean> createCount(@RequestBody ShortCountRequest request) {
+        return  ResponseEntity.ok(service.createUserShortCount(request));
+    }
 
     @GetMapping("/link/{userEmail}/data/{id}")
     public ResponseEntity<Shortener> GetShortenedUrlByUserEmail(@PathVariable String userEmail, @PathVariable Integer id) {
         return ResponseEntity.ok(service.getShortenedUrlById(userEmail, id));
     }
     @GetMapping("/links/{userEmail}")
-    public ResponseEntity<List<Shortener>> GetUrlsByUserEmail(@PathVariable String userEmail) {
+    public ResponseEntity<List<UrlShortenerResponse>> GetUrlsByUserEmail(@PathVariable String userEmail) {
         return ResponseEntity.ok(service.getShortenedUrlsByUserEmail(userEmail));
     }
 
@@ -54,10 +53,10 @@ public class UrlShortenerController {
         }
     }
 
-    @GetMapping("/{userEmail}/{clickedLink}")
-    public ResponseEntity<Integer> getShortCount(@PathVariable String userEmail, @PathVariable String clickedLink) {
-        return ResponseEntity.ok(service.shortCountByUserEmail(userEmail, clickedLink));
-    }
+//    @GetMapping("/{userEmail}/{clickedLink}")
+//    public ResponseEntity<Integer> getShortCount(@PathVariable String userEmail, @PathVariable String clickedLink) {
+//        return ResponseEntity.ok(service.shortCountByUserEmail(userEmail, clickedLink));
+//    }
 
 
 
