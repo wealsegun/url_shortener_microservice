@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
     // 'shortenedBitlyUrl',
     'customUrl',
     'customRequested',
+    'clickedCount',
     'createdDate',
     'expiryDate',
   ];
@@ -107,12 +108,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.service.createUrlCount(url).subscribe((response) => {
       console.log(response);
+      const email = this.userProfile?.email? this.userProfile?.email: "";
+      this.getUrlList(email);
     });
   }
 
-  getCount(userEmail: string) {
-    console.log(userEmail);
-  }
+  // getCount(userEmail: string) {
+  //   console.log(userEmail);
+  // }
+
+  // getClicked(details: any) {
+  //   const {userEmail, clickedLink} = details;
+  //   this.service.getClicked(userEmail,clickedLink ).subscribe((response) => {
+  //     console.log(response);
+  //     this.noOfClicked = +response;
+  //     return response;
+
+  //   })
+  // }
 
   onSubmit(url: any) {
     this.service.generateURL(url).subscribe(

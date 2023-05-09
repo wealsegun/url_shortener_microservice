@@ -19,8 +19,12 @@ export class DashboardService {
     return this.httpClient.get<any>(url);
   }
   getUserUrl(userEmail: string, id: number): Observable<any> {
-    const url = `${environment.baseUrl}link/${userEmail}/data/${id}`;
+    const url = `${environment.baseUrl}short/link/${userEmail}/data/${id}`;
     return this.httpClient.get<any>(url);
+  }
+  getClicked(userEmail: string, clickedLink: string) {
+    const url=  `${environment.baseUrl}short/${userEmail}/${clickedLink}`;
+    return this.httpClient.get(url);
   }
   createUrlCount(urlCount: CreateCountModel): Observable<any> {
     const url = `${environment.baseUrl}short/count-create`;

@@ -71,12 +71,16 @@
       <!-- Custom Requested Column -->
       <ng-container matColumnDef="customRequested">
         <th mat-header-cell *matHeaderCellDef> Custom Requested </th>
-        <td mat-cell *matCellDef="let element"> {{element.customRequested}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.isCustomRequested}} </td>
       </ng-container>
         <!-- Custom Column -->
       <ng-container matColumnDef="customUrl">
         <th mat-header-cell *matHeaderCellDef> Custom </th>
         <td mat-cell *matCellDef="let element"><a href={{element.customUrl}} (click)="SendCountDetails(element)" target="_blank">{{ element.customUrl.length > 15 ? element.customUrl.substring(0, 15) + '...' : element.customUrl }}</a> </td>
+      </ng-container>
+      <ng-container matColumnDef="clickedCount">
+        <th mat-header-cell *matHeaderCellDef> No of Clicked </th>
+        <td mat-cell *matCellDef="let element"> {{element.clickedCount}} </td>
       </ng-container>
        <!-- Tiny Column -->
        <ng-container matColumnDef="createdDate">

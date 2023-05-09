@@ -7,6 +7,7 @@ export interface UserGeneratedUrlModel {
   userEmail: string;
   customUrl: string;
   expiryDate: string;
+  noOfClicked: number;
   createdDate: string;
-  customRequested: boolean;
+  isCustomRequested: boolean;
 }
